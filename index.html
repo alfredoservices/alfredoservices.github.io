@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Alfredo Services | Serviços Profissionais & Formação</title>
+
+<meta name="description" content="Alfredo Services oferece Marketing Digital, Tráfego Pago, criação de cartão visa virtual, Corte e Costura, Garson, Decoração, Pastelaria, Formação Profissional e Importação.">
+<meta property="og:title" content="Alfredo Services">
+<meta property="og:description" content="Soluções profissionais em serviços, formação e marketing digital.">
+<meta property="og:image" content="lg.jpg">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="lg.jpg">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <img src="lg.jpg" class="logo" alt="Alfredo Services">
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="contato.html">Contato</a>
+    <a href="admin.html">⚙</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Alfredo Services</h1>
+  <p>Excelência em serviços profissionais, formação e soluções digitais</p>
+</section>
+
+<section class="container">
+  <h2>Atualizações recentes</h2>
+  <div id="posts"></div>
+</section>
+
+<style>
+  .post-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+  }
+
+  .post-card img,
+  .post-card video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .post-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+  }
+
+  .post-text {
+    margin-bottom: 10px;
+  }
+
+  .post-date {
+    font-size: 0.85em;
+    color: #777;
+    margin-top: 5px;
+  }
+
+  .whatsapp-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .whatsapp-button:hover {
+    background-color: #1ebe57;
+  }
+</style>
+
+<script type="module">
+import { supabase } from "./supabase.js";
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2,"0");
+  const month = String(date.getMonth()+1).padStart(2,"0");
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2,"0");
+  const minutes = String(date.getMinutes()).padStart(2,"0");
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+async function loadMainPosts() {
+  const postsContainer = document.getElementById("posts");
+  postsContainer.innerHTML = "Carregando atualizações...";
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (error) {
+    postsContainer.innerHTML = "Erro ao carregar posts: " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    postsContainer.innerHTML = "<p>Nenhuma atualização recente.</p>";
+    return;
+  }
+
+  postsContainer.innerHTML = "";
+  data.forEach(p => {
+    let mediaHTML = "";
+    let whatsappButton = "";
+
+    if (p.media) {
+      if (p.media.match(/\.(mp4|webm|ogg)$/i)) {
+        mediaHTML = `<video src="${p.media}" controls style="width:100%;"></video>`;
+        whatsappButton = `<a class="whatsapp-button" href="https://wa.me/244930349132?text=${encodeURIComponent('Olá! Quero saber mais sobre ' + p.titulo)}" target="_blank">Saber mais sobre isso</a>`;
+      } else {
+        mediaHTML = `<img src="${p.media}">`;
+      }
+    }
+
+    postsContainer.innerHTML += `
+      <div class="post-card">
+        ${mediaHTML}
+        <div class="post-title">${p.titulo}</div>
+        <div class="post-text">${p.texto}</div>
+        ${whatsappButton}
+        <div class="post-date">Publicado em ${formatDate(p.created_at)}</div>
+      </div>
+    `;
+  });
+}
+
+// Carregar posts ao abrir a página
+loadMainPosts();
+</script>
+
+<section class="container">
+  <h2>Nossos Serviços</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg">
+      <h3>Marketing Digital</h3>
+      <p>Gestão estratégica de redes sociais, criação de conteúdo profissional e posicionamento digital para marcas e negócios.</p>
+      <!-- Botão Solicitar Marketing de Serviço -->
+<button id="solicitarMarketingBtn">📈 Solicitar Marketing de Serviço</button>
+
+<script>
+// Seleciona o botão
+const btnMarketing = document.getElementById("solicitarMarketingBtn");
+
+// Ação ao clicar
+btnMarketing.addEventListener("click", () => {
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  // Mensagem formatada
+  const mensagem = `📈 *Solicitação de Marketing de Serviço - Alfredo Services*\n\n` +
+                   `📌 Gostaria de contratar serviços de marketing digital e promoção de serviços.\n` +
+                   `💡 Agradeço o seu contato e disponibilidade.\n\n` +
+                   `📅 Data/Hora: ${data}`;
+
+  // Abre WhatsApp
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/6963944/pexels-photo-6963944.jpeg">
+      <h3>Tráfego Pago</h3>
+      <p>Links patrocinados focados em resultados reais, vendas e geração de leads.</p>
+      <!-- Botão Patrocinar Serviço -->
+<button id="patrocinarBtn">💼 Patrocinar Serviço</button>
+
+<script>
+// Seleciona o botão
+const btnPatrocinar = document.getElementById("patrocinarBtn");
+
+// Ação ao clicar
+btnPatrocinar.addEventListener("click", () => {
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  // Mensagem formatada
+  const mensagem = `💼 *Patrocínio de Serviço - Alfredo Services*\n\n` +
+                   `📌 Gostaria de promover meu serviço.\n` +
+                   `💡 Podes me dar mais detalhes?\n\n` +
+                   `📅 Data/Hora: ${data}`;
+
+  // Abre WhatsApp
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+<div class="card">
+  <img src="imagem.jpeg" alt="Imagem de corte e costura">
+</div>
+      <h3>Corte e Costura</h3>
+      <p>Confecção, ajustes e formação profissional em corte e costura com qualidade e precisão.</p>
+      <!-- Botão Solicitar Costura -->
+<button id="solicitarCosturaBtn">✂️ Solicitar Costura</button>
+
+<script>
+// Seleciona o botão
+const btnCostura = document.getElementById("solicitarCosturaBtn");
+
+// Ação ao clicar
+btnCostura.addEventListener("click", () => {
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  // Mensagem formatada
+  const mensagem = `✂️ *Solicitação de Serviço de Costura - Alfredo Services*\n\n` +
+                   `📌 Gostaria de contratar serviços de corte e costura.\n` +
+                   `💡 Agradeço o seu contato e disponibilidade.\n\n` +
+                   `📅 Data/Hora: ${data}`;
+
+  // Abre WhatsApp
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg">
+      <h3>Decoração</h3>
+      <p>Decoração profissional para eventos, festas, cerimônias e ambientes corporativos.</p>
+      <!-- Botão Solicitar Decoração -->
+<button id="solicitarDecoracaoBtn">🎨 Solicitar Decoração</button>
+
+<script>
+// Seleciona o botão
+const btnDecoracao = document.getElementById("solicitarDecoracaoBtn");
+
+// Ação ao clicar
+btnDecoracao.addEventListener("click", () => {
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  // Mensagem formatada
+  const mensagem = `🎨 *Solicitação de Serviço de Decoração - Alfredo Services*\n\n` +
+                   `📌 Gostaria de contratar serviços de decoração para evento ou ambiente.\n` +
+                   `💡 Agradeço o seu contato e disponibilidade.\n\n` +
+                   `📅 Data/Hora: ${data}`;
+
+  // Abre WhatsApp
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/4109997/pexels-photo-4109997.jpeg">
+      <h3>Pastelaria</h3>
+      <p>Produção de bolos, doces, salgados e serviços de pastelaria para eventos e encomendas especiais.</p>
+      <!-- Botão Solicitar Pastelaria -->
+<button id="solicitarPastelariaBtn">🍰 Solicitar serviços de Pastelaria</button>
+
+<script>
+// Seleciona o botão
+const btnPastelaria = document.getElementById("solicitarPastelariaBtn");
+
+// Ação ao clicar
+btnPastelaria.addEventListener("click", () => {
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  // Mensagem formatada
+  const mensagem = `🍰 *Solicitação de Serviço de Pastelaria - Alfredo Services*\n\n` +
+                   `📌 Gostaria de contratar serviços de pastelaria para eventos ou encomendas.\n` +
+                   `💡 Agradeço o seu contato e disponibilidade.\n\n` +
+                   `📅 Data/Hora: ${data}`;
+
+  // Abre WhatsApp
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184638/pexels-photo-3184638.jpeg">
+      <h3>Formação Profissional</h3>
+      <p>Garanta sua formação nas áreas de marketing digital, trafego pago, pastelaria, corte e costura, decoração e importação.</p>
+      <!-- Botão para abrir sessão oculta -->
+<button id="solicitarCursoBtn">📚 Solicitar Curso</button>
+
+<!-- Sessão oculta -->
+<section id="cursoFormSection" style="display:none; margin-top:2rem;">
+  <div class="card">
+    <h2>Solicitar Curso</h2>
+    <form id="cursoForm">
+      <label>👤 Nome (obrigatório)</label>
+      <input type="text" id="nomeCurso" placeholder="Seu nome" required>
+
+      <label>📞 Número (obrigatório)</label>
+      <input type="text" id="numeroCurso" placeholder="+244 9XX XXX XXX" required>
+
+      <label>✉ Email (opcional)</label>
+      <input type="email" id="emailCurso" placeholder="seuemail@exemplo.com">
+
+      <label>🎓 Curso (obrigatório)</label>
+      <select id="cursoSelecionado" required>
+        <option value="">--Selecione o curso--</option>
+        <option value="Marketing Digital">Marketing Digital</option>
+        <option value="Tráfego Pago">Tráfego Pago</option>
+        <option value="Corte e Costura">Corte e Costura</option>
+        <option value="Garson">Garson (Garçom)</option>
+        <option value="Decoração">Decoração</option>
+        <option value="Pastelaria">Pastelaria</option>
+        <option value="Formação Profissional">Formação Profissional</option>
+        <option value="Importação">Importação</option>
+      </select>
+
+      <button type="submit">Enviar via WhatsApp</button>
+    </form>
+  </div>
+</section>
+
+<script>
+const btnCurso = document.getElementById("solicitarCursoBtn");
+const secCurso = document.getElementById("cursoFormSection");
+
+// Mostrar/ocultar sessão
+btnCurso.addEventListener("click", () => {
+  secCurso.style.display = secCurso.style.display === "none" ? "block" : "none";
+  secCurso.scrollIntoView({behavior:"smooth"});
+});
+
+// Envio do formulário para WhatsApp
+document.getElementById("cursoForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const nome = document.getElementById("nomeCurso").value.trim();
+  const numero = document.getElementById("numeroCurso").value.trim();
+  const email = document.getElementById("emailCurso").value.trim();
+  const curso = document.getElementById("cursoSelecionado").value;
+
+  if(!nome || !numero || !curso){
+    alert("Por favor preencha os campos obrigatórios!");
+    return;
+  }
+
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  let mensagem = `🌟 *Solicitação de Curso - Alfredo Services*\n\n`;
+  mensagem += `👤 Nome: ${nome}\n`;
+  mensagem += `📞 Número: ${numero}\n`;
+  if(email) mensagem += `✉ Email: ${email}\n`;
+  mensagem += `🎓 Curso Solicitado: ${curso}\n\n`;
+  mensagem += `💡 Preciso mais detalhes do curso.\n\n`;
+  mensagem += `📅 Data/Hora: ${data}`;
+
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg">
+      <h3>Importação</h3>
+      <p>Consultoria e formação em processos de importação de serviços digitais.</p>
+      <!-- Botão Solicitar Importação -->
+<button id="solicitarImportacaoBtn">📦 Solicitar Importação</button>
+
+<script>
+// Seleciona o botão
+const btnImportacao = document.getElementById("solicitarImportacaoBtn");
+
+// Ação ao clicar
+btnImportacao.addEventListener("click", () => {
+  const hoje = new Date();
+  const data = hoje.toLocaleDateString() + " " + hoje.toLocaleTimeString();
+
+  // Mensagem formatada
+  const mensagem = `📦 *Solicitação de Serviço de Importação - Alfredo Services*\n\n` +
+                   `📌 Gostaria de contratar serviços de importação de mercadorias.\n` +
+                   `💡 Agradeço o seu contato e disponibilidade.\n\n` +
+                   `📅 Data/Hora: ${data}`;
+
+  // Abre WhatsApp
+  const url = `https://wa.me/244930349132?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
+});
+</script>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>📞 922473359 / 956103824</p>
+  <p>✉ alfredomarcolino4@gmail.com</p>
+  <p>© Alfredo Services</p>
+</footer>
+
+<script type="module">
+import "./supabase.js";
+
+const posts = document.getElementById("posts");
+const { data } = await supabase
+  .from("posts")
+  .select("*")
+  .order("created_at",{ascending:false});
+
+data.forEach(p=>{
+posts.innerHTML += `
+<div class="card">
+<h3>${p.titulo}</h3>
+<p>${p.texto}</p>
+${p.media.includes("mp4") || p.media.includes("webm")
+? `<video controls src="${p.media}"></video>`
+: `<img src="${p.media}">`}
+</div>`;
+});
+</script>
+
+</body>
+</html>
