@@ -305,3 +305,48 @@ padding-top:10px;
 font-size:13px;
 opacity:0.9;
 }
+/* ===== Seção de vídeos ===== */
+
+.videos{
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 10px;
+}
+
+/* Vídeos responsivos */
+
+.videos video{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+/* Botão abaixo do vídeo */
+
+.videos .whatsapp{
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 25px;
+}
+
+/* Ajuste para telas grandes */
+
+@media (min-width:768px){
+
+  .videos video{
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .videos .whatsapp{
+    max-width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
